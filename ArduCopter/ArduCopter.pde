@@ -1,6 +1,6 @@
 /// -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
 
-#define THISFIRMWARE "ArduCopter V3.1-rc5"
+#define THISFIRMWARE "ArduCopter V3.1-rc5 MPNG-R1b"
 /*
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -76,6 +76,7 @@
 // AP_HAL
 #include <AP_HAL.h>
 #include <AP_HAL_AVR.h>
+#include <AP_HAL_MPNG.h>
 #include <AP_HAL_AVR_SITL.h>
 #include <AP_HAL_PX4.h>
 #include <AP_HAL_FLYMAPLE.h>
@@ -178,6 +179,8 @@ static void print_flight_mode(AP_HAL::BetterStream *port, uint8_t mode);
 static DataFlash_APM2 DataFlash;
 #elif CONFIG_HAL_BOARD == HAL_BOARD_APM1
 static DataFlash_APM1 DataFlash;
+#elif CONFIG_HAL_BOARD == HAL_BOARD_MPNG
+static DataFlash_MPNG DataFlash;
 #elif CONFIG_HAL_BOARD == HAL_BOARD_AVR_SITL
 //static DataFlash_File DataFlash("/tmp/APMlogs");
 static DataFlash_SITL DataFlash;
@@ -223,6 +226,10 @@ static AP_ADC_ADS7844 adc;
 
  #if CONFIG_IMU_TYPE == CONFIG_IMU_MPU6000
 static AP_InertialSensor_MPU6000 ins;
+#elif CONFIG_IMU_TYPE == CONFIG_IMU_MPU6000_I2C
+static AP_InertialSensor_MPU6000_I2C ins;
+#elif CONFIG_IMU_TYPE == CONFIG_IMU_ITG3200
+static AP_InertialSensor_ITG3200 ins(MPNG_BOARD_TYPE);
 #elif CONFIG_IMU_TYPE == CONFIG_IMU_OILPAN
 static AP_InertialSensor_Oilpan ins(&adc);
 #elif CONFIG_IMU_TYPE == CONFIG_IMU_SITL

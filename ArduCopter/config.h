@@ -74,6 +74,32 @@
  # define CONFIG_BARO       AP_BARO_PX4
  # define CONFIG_SONAR_SOURCE SONAR_SOURCE_ANALOG_PIN
  # define MAGNETOMETER ENABLED
+#elif CONFIG_HAL_BOARD == HAL_BOARD_MPNG
+ #ifndef MPNG_BOARD_TYPE
+  #define MPNG_BOARD_TYPE RCTIMER_CRIUS_V2
+ #endif
+
+ #if MPNG_BOARD_TYPE != RCTIMER_CRIUS_V2
+ 	#define LOGGING_ENABLED DISABLED
+ #endif
+
+ # define PIEZO_PIN AN3
+ 
+ #if MPNG_BOARD_TYPE == HK_RED_MULTIWII_PRO || MPNG_BOARD_TYPE == BLACK_VORTEX
+	 # define CONFIG_IMU_TYPE   CONFIG_IMU_ITG3200
+	 # define CONFIG_BARO       AP_BARO_BMP085
+ #else
+	 # define CONFIG_IMU_TYPE   CONFIG_IMU_MPU6000_I2C
+	 # define CONFIG_BARO       AP_BARO_MS5611
+	 # define CONFIG_MS5611_SERIAL AP_BARO_MS5611_I2C
+ #endif
+ 
+ # define CONFIG_ADC        DISABLED
+ # define CONFIG_SONAR_SOURCE SONAR_SOURCE_ANALOG_PIN
+ # define MAGNETOMETER ENABLED
+ # define CONFIG_ADC        DISABLED
+ # define MAGNETOMETER ENABLED
+ # define CONFIG_SONAR_SOURCE SONAR_SOURCE_ANALOG_PIN
 #elif CONFIG_HAL_BOARD == HAL_BOARD_FLYMAPLE
  # define CONFIG_IMU_TYPE CONFIG_IMU_FLYMAPLE
  # define CONFIG_BARO AP_BARO_BMP085
@@ -175,6 +201,11 @@
  # define LED_OFF          LOW
  # define BATTERY_VOLT_PIN      0      // Battery voltage on A0
  # define BATTERY_CURR_PIN      1      // Battery current on A1
+#elif CONFIG_HAL_BOARD == HAL_BOARD_MPNG
+ # define LED_ON           HIGH
+ # define LED_OFF          LOW
+ # define BATTERY_VOLT_PIN      1      // Battery voltage on A1
+ # define BATTERY_CURR_PIN      2      // Battery current on A2
 #elif CONFIG_HAL_BOARD == HAL_BOARD_APM2
  # define LED_ON           LOW
  # define LED_OFF          HIGH
@@ -231,6 +262,15 @@
  #define COPTER_LED_6 AN13      // Motor LED
  #define COPTER_LED_7 AN14      // Motor LED
  #define COPTER_LED_8 AN15      // Motor LED
+#elif CONFIG_HAL_BOARD == HAL_BOARD_MPNG
+ #define COPTER_LED_1 AN4         // Motor or Aux LED
+ #define COPTER_LED_2 AN5         // Motor LED
+ #define COPTER_LED_3 AN6         // Motor or GPS LED
+ #define COPTER_LED_4 AN7         // Motor LED
+ #define COPTER_LED_5 -1         // Motor LED
+ #define COPTER_LED_6 -1         // Motor LED
+ #define COPTER_LED_7 -1        // Motor LED
+ #define COPTER_LED_8 -1        // Motor LED
 #else
  // not supported yet on this board
  #undef COPTER_LEDS
