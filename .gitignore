@@ -61,3 +61,9 @@ serialsent.raw
 status.txt
 tags
 test.ArduCopter/*
+pde.jar
+tags
+cscope.files
+cscope.out
+cscope.in.out
+cscope.po.out
