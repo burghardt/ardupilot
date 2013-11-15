@@ -18,6 +18,9 @@ endif
 all: build
 install: upload
 
+configure:
+	make -C ArduCopter configure
+
 build:
 	make -C ArduCopter
 
