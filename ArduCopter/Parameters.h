@@ -75,6 +75,7 @@ public:
         k_param_yaw_override_behaviour,
         k_param_acro_trainer_enabled,
         k_param_pilot_velocity_z_max,   // 28
+        k_param_rssi_range,
 
         // 65: AP_Limits Library
         k_param_limits = 65,
@@ -276,6 +277,7 @@ public:
     AP_Int8         rssi_pin;
     AP_Int8         throttle_accel_enabled;      // enable/disable accel based throttle controller
     AP_Int8         yaw_override_behaviour;     // controls when autopilot takes back normal control of yaw after pilot overrides
+    AP_Float        rssi_range;                 // allows to set max voltage for rssi pin such as 5.0, 3.3 etc. 
 
     // Waypoints
     //
