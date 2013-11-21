@@ -1,4 +1,10 @@
-include ../libraries/AP_Common/Arduino.mk
+SYSTYPE	:=	$(shell uname)
+
+ifneq ($(findstring CYGWIN, $(SYSTYPE)),)
+	include ../libraries/AP_Common/Arduino.cygwin.mk
+else
+	include ../libraries/AP_Common/Arduino.mk
+endif
 
 nologging:
 	make -f Makefile EXTRAFLAGS="-DLOGGING_ENABLED=DISABLED"

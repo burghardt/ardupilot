@@ -70,7 +70,7 @@ const AP_Param::Info var_info[] PROGMEM = {
     // @Description: Used to adjust scaling to match the sonar used (only Maxbotix sonars are supported at this time)
     // @Values: 0:XL-EZ0,1:LV-EZ0,2:XLL-EZ0,3:HRLV
     // @User: Standard
-    GSCALAR(sonar_type,     "SONAR_TYPE",           AP_RANGEFINDER_MAXSONARXL),
+    GSCALAR(sonar_type,     "SONAR_TYPE",           0),
 
     // @Param: BATT_MONITOR
     // @DisplayName: Battery monitoring
@@ -640,11 +640,7 @@ const AP_Param::Info var_info[] PROGMEM = {
 
 static void load_parameters(void)
 {
-    // change the default for the AHRS_GPS_GAIN for ArduCopter
-    // if it hasn't been set by the user
-    if (!ahrs.gps_gain.load()) {
-        ahrs.gps_gain.set_and_save(1.0);
-    }
+		ahrs.gps_gain.set(0.0);
 
     // setup different AHRS gains for ArduCopter than the default
     // but allow users to override in their config

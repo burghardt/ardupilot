@@ -34,7 +34,7 @@ class AP_Camera {
 public:
     /// Constructor
     ///
-    AP_Camera(Relay *obj_relay) :
+    AP_Camera(AP_Relay *obj_relay) :
         _trigger_counter(0),            // count of number of cycles shutter has been held open
         _thr_pic_counter(0)             // timer variable for throttle_pic
     {
@@ -61,7 +61,7 @@ private:
     AP_Int16        _servo_off_pwm;     // PWM value to move servo to when shutter is deactivated
     uint8_t         _trigger_counter;   // count of number of cycles shutter has been held open
     uint8_t         _thr_pic_counter;   // timer variable for throttle_pic
-    Relay          *_apm_relay;         // pointer to relay object from the base class Relay. The subclasses could be AP_Relay_APM1 or AP_Relay_APM2
+    AP_Relay          *_apm_relay;         // pointer to relay object from the base class Relay. The subclasses could be AP_Relay_APM1 or AP_Relay_APM2
 
     void            servo_pic();        // Servo operated camera
     void            relay_pic();        // basic relay activation

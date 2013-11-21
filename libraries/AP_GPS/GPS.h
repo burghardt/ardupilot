@@ -63,6 +63,7 @@ public:
     /// GPS time epoch codes
     ///
     enum        GPS_Time_Epoch {
+        TIME_NONE       = -1,
         TIME_OF_DAY     = 0,            ///<
         TIME_OF_WEEK    = 1,            ///< Ublox
         TIME_OF_YEAR    = 2,            ///< MTK, NMEA
@@ -159,7 +160,19 @@ protected:
     ///
     /// @param	s	Stream connected to the GPS module.
     ///
-    GPS(Stream *s) : _port(s) {
+    GPS(Stream *s) : _port(s),
+        new_data(false),
+        fix(false),
+        valid_read(false),
+        print_errors(false),
+        _epoch(TIME_NONE),
+        _nav_setting(GPS_ENGINE_NONE),
+        _have_raw_velocity(false),
+        _status(NO_GPS),
+        _velocity_north(0),
+        _velocity_east(0),
+        _velocity_down(0)
+    {
     };
 
     /// read from the GPS stream and update properties

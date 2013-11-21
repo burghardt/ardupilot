@@ -6,29 +6,31 @@
 static void ReadSCP1000(void) {
 }
 
- #if CONFIG_SONAR == ENABLED
+#if CONFIG_SONAR == ENABLED
 static void init_sonar(void)
 {
-  #if CONFIG_SONAR_SOURCE == SONAR_SOURCE_ADC
-    sonar.calculate_scaler(g.sonar_type, 3.3);
-  #else
-    sonar.calculate_scaler(g.sonar_type, 5.0);
-  #endif
+	#if CONFIG_SONAR_SOURCE == SONAR_SOURCE_ADC
+		sonar.calculate_scaler(g.sonar_type, 3.3);
+	#elif CONFIG_SONAR_SOURCE == SONAR_SOURCE_PIRATES
+		sonar.init();
+	#elif CONFIG_SONAR_SOURCE == SONAR_SOURCE_ANALOG_PIN
+		sonar.calculate_scaler(g.sonar_type, 5.0);
+	#endif
 }
- #endif
+#endif
 
 static void init_barometer(void)
 {
     barometer.calibrate(mavlink_delay);
     ahrs.set_barometer(&barometer);
     gcs_send_text_P(SEVERITY_LOW, PSTR("barometer calibration complete"));
-}
+	}
 
 // return barometric altitude in centimeters
 static int32_t read_barometer(void)
 {
-    barometer.read();
-    return baro_filter.apply(barometer.get_altitude() * 100.0);
+	barometer.read();
+	return baro_filter.apply(barometer.get_altitude() * 100.0);
 }
 
 // return sonar altitude in centimeters
@@ -69,14 +71,18 @@ static int16_t read_sonar(void)
 
 static void init_compass()
 {
-    compass.set_orientation(MAG_ORIENTATION);                                                   // set compass's orientation on aircraft
-    if (!compass.init() || !compass.read()) {
+	compass.set_orientation(MAG_ORIENTATION);						// set compass's orientation on aircraft
+	#if CONFIG_APM_HARDWARE == APM_HARDWARE_PIRATES
+		((AP_Compass_HMC5843_Pirates*) &compass)->init(&timer_scheduler);
+	#else
+	if (!compass.init() || !compass.read()) {
         // make sure we don't pass a broken compass to DCM
         cliSerial->println_P(PSTR("COMPASS INIT ERROR"));
         Log_Write_Error(ERROR_SUBSYSTEM_COMPASS,ERROR_CODE_FAILED_TO_INITIALISE);
         return;
-    }
-    ahrs.set_compass(&compass);
+	    }
+	#endif
+	ahrs.set_compass(&compass);
 #if SECONDARY_DMP_ENABLED == ENABLED
     ahrs2.set_compass(&compass);
 #endif
@@ -85,21 +91,21 @@ static void init_compass()
 static void init_optflow()
 {
 #if OPTFLOW == ENABLED
-    if( optflow.init(false, &timer_scheduler, &spi_semaphore, &spi3_semaphore) == false ) {
-        g.optflow_enabled = false;
+    if( optflow.init(true, &timer_scheduler) == false ) {
+	    g.optflow_enabled = false;
         cliSerial->print_P(PSTR("\nFailed to Init OptFlow "));
         Log_Write_Error(ERROR_SUBSYSTEM_OPTFLOW,ERROR_CODE_FAILED_TO_INITIALISE);
     }else{
-        // suspend timer while we set-up SPI communication
-        timer_scheduler.suspend_timer();
+    // suspend timer while we set-up SPI communication
+    timer_scheduler.suspend_timer();
 
-        optflow.set_orientation(OPTFLOW_ORIENTATION);   // set optical flow sensor's orientation on aircraft
-        optflow.set_frame_rate(2000);                   // set minimum update rate (which should lead to maximum low light performance
-        optflow.set_resolution(OPTFLOW_RESOLUTION);     // set optical flow sensor's resolution
-        optflow.set_field_of_view(OPTFLOW_FOV);         // set optical flow sensor's field of view
+	optflow.set_orientation(OPTFLOW_ORIENTATION);			// set optical flow sensor's orientation on aircraft
+	optflow.set_frame_rate(2000);							// set minimum update rate (which should lead to maximum low light performance
+	optflow.set_resolution(OPTFLOW_RESOLUTION);				// set optical flow sensor's resolution
+	optflow.set_field_of_view(OPTFLOW_FOV);					// set optical flow sensor's field of view
 
-        // resume timer
-        timer_scheduler.resume_timer();
+    // resume timer
+    timer_scheduler.resume_timer();
     }
 #endif      // OPTFLOW == ENABLED
 }
@@ -111,35 +117,35 @@ static void read_battery(void)
 {
     static uint8_t low_battery_counter = 0;
 
-    if(g.battery_monitoring == 0) {
-        battery_voltage1 = 0;
-        return;
-    }
+	if(g.battery_monitoring == 0){
+		battery_voltage1 = 0;
+		return;
+	}
 
     if(g.battery_monitoring == 3 || g.battery_monitoring == 4) {
         static AP_AnalogSource_Arduino batt_volt_pin(g.battery_volt_pin);
         batt_volt_pin.set_pin(g.battery_volt_pin);
         battery_voltage1 = BATTERY_VOLTAGE(batt_volt_pin.read_average());
     }
-    if(g.battery_monitoring == 4) {
+	if(g.battery_monitoring == 4) {
         static AP_AnalogSource_Arduino batt_curr_pin(g.battery_curr_pin);
         batt_curr_pin.set_pin(g.battery_curr_pin);
         current_amps1    = CURRENT_AMPS(batt_curr_pin.read_average());
-        current_total1   += current_amps1 * 0.02778;            // called at 100ms on average, .0002778 is 1/3600 (conversion to hours)
-    }
+		current_total1	 += current_amps1 * 0.02778;	// called at 100ms on average, .0002778 is 1/3600 (conversion to hours)
+	}
 
     // check for low voltage or current if the low voltage check hasn't already been triggered
     if (!ap.low_battery && ( battery_voltage1 < g.low_voltage || (g.battery_monitoring == 4 && current_total1 > g.pack_capacity))) {
         low_battery_counter++;
         if( low_battery_counter >= BATTERY_FS_COUNTER ) {
             low_battery_counter = BATTERY_FS_COUNTER;   // ensure counter does not overflow
-            low_battery_event();
+		low_battery_event();
         }
-    }else{
+		}else{
         // reset low_battery_counter in case it was a temporary voltage dip
         low_battery_counter = 0;
-    }
-}
+		}
+		}
 
 // read the receiver RSSI as an 8 bit number for MAVLink
 // RC_CHANNELS_SCALED message

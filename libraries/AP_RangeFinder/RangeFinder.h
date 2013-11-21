@@ -16,30 +16,37 @@
  * #define AP_RANGEFINDER_ORIENTATION_BACK_RIGHT     -5, -5,  0
  * #define AP_RANGEFINDER_ORIENTATION_BACK_LEFT       5, -5,  0
  * #define AP_RANGEFINDER_ORIENTATION_FRONT_LEFT      5,  5,  0
- */
+*/
 
 class RangeFinder
 {
-protected:
-    RangeFinder(AP_AnalogSource * source, FilterInt16 *filter) :
-        _analog_source(source),
-        _mode_filter(filter) {
+  protected:
+	RangeFinder(AP_AnalogSource * source, FilterInt16 *filter) :
+		_analog_source(source),
+        _mode_filter(filter),
+        raw_value(0),
+        distance(0),
+        max_distance(0),
+        min_distance(0),
+        orientation_x(0),
+        orientation_y(0),
+        orientation_z(0) {
     }
-public:
+  public:
 
-    int                     raw_value; // raw value from the sensor
-    int                     distance; // distance in cm
-    int                     max_distance; // maximum measurable distance (in cm) - should be set in child's constructor
-    int                     min_distance; // minimum measurable distance (in cm) - should be set in child's constructor
-    int                     orientation_x, orientation_y, orientation_z;
+	int raw_value;     // raw value from the sensor
+	int distance;      // distance in cm
+	int max_distance;  // maximum measurable distance (in cm) - should be set in child's constructor
+	int min_distance;  // minimum measurable distance (in cm) - should be set in child's constructor
+	int orientation_x, orientation_y, orientation_z;
 
-    virtual void            set_orientation(int x, int y, int z);
+    virtual void set_orientation(int x, int y, int z);
     virtual int             convert_raw_to_distance(int _raw_value) {
         return _raw_value;
     }                                                                               // function that each child class should override to convert voltage to distance
-    virtual int             read(); // read value from sensor and return distance in cm
+	virtual int read();   // read value from sensor and return distance in cm
 
-    AP_AnalogSource *       _analog_source;
-    FilterInt16 *           _mode_filter;
+	AP_AnalogSource *_analog_source;
+	FilterInt16 *_mode_filter;
 };
 #endif

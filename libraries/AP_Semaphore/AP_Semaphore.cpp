@@ -14,7 +14,11 @@ extern "C" {
 #endif
 
 // Constructor
-AP_Semaphore::AP_Semaphore()
+AP_Semaphore::AP_Semaphore() :
+    _taken(0),
+    _owner(NULL),
+    _waiting_owner(NULL),
+    _waiting_callback(NULL)
 {
 }
 

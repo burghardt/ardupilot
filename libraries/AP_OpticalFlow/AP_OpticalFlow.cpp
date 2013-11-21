@@ -33,7 +33,7 @@ AP_OpticalFlow::set_orientation(enum Rotation rotation)
 
 // parent method called at 1khz by periodic process
 // this is slowed down to 20hz and each instance's update function is called (only one instance is supported at the moment)
-void
+bool
 AP_OpticalFlow::read(uint32_t now)
 {
     _num_calls++;
@@ -43,8 +43,10 @@ AP_OpticalFlow::read(uint32_t now)
         // call to update all attached sensors
         if( _sensor != NULL ) {
             _sensor->update(now);
+            return true;
         }
     }
+    return false;
 };
 
 // read value from the sensor.  Should be overridden by derived class

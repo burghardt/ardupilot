@@ -1,23 +1,94 @@
 // -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
+#ifndef __ARDUCOPTER_APMCONFIG_H__
+#define __ARDUCOPTER_APMCONFIG_H__ 
 
-// Example config file. Take a look at config.h. Any term define there can be overridden by defining it here.
-
-//#define CONFIG_APM_HARDWARE APM_HARDWARE_APM2
-
-// Ordinary users should please ignore the following define.
-// APM2_BETA_HARDWARE is used to support early (September-October 2011) APM2
-// hardware which had the BMP085 barometer onboard. Only a handful of
-// developers have these boards.
-//#define APM2_BETA_HARDWARE
-
-//#define MAG_ORIENTATION		AP_COMPASS_COMPONENTS_DOWN_PINS_FORWARD
-//#define HIL_MODE				HIL_MODE_ATTITUDE
-//#define DMP_ENABLED ENABLED
-//#define SECONDARY_DMP_ENABLED ENABLED       // allows running DMP in parallel with DCM for testing purposes
-
-//#define FRAME_CONFIG QUAD_FRAME
+// Select your sensor board
+#define PIRATES_SENSOR_BOARD PIRATES_CRIUS_AIO_PRO_V1
 /*
- *  options:
+	PIRATES_ALLINONE
+	PIRATES_FFIMU
+	PIRATES_FREEIMU
+	PIRATES_BLACKVORTEX
+	PIRATES_FREEIMU_4 					// New FreeIMU 0.4.1 with MPU6050, MS5611 and 5883L
+	PIRATES_DROTEK_10DOF_MPU		// MPU6050, MS5611 and 5883L
+	PIRATES_CRIUS_AIO_PRO_V1		// Crius AllInOne Pro v1(1.1)
+	PIRATES_CRIUS_AIO_PRO_V2		// Crius AllInOne Pro v2
+*/
+
+// RC configuration
+
+// PPM_SUM(CPPM) Signal processing
+#define SERIAL_PPM SERIAL_PPM_ENABLED
+/*
+	SERIAL_PPM_DISABLED
+	SERIAL_PPM_ENABLED				// For all boards, PPM_SUM pin is A8
+	SERIAL_PPM_ENABLED_PL1		// Use for CRIUS AIOP Pro v2,
+*/
+
+#define TX_CHANNEL_SET	TX_standard
+/*
+	TX_set1							//Graupner/Spektrum												PITCH,YAW,THROTTLE,ROLL,AUX1,AUX2,CAMPITCH,CAMROLL
+	TX_standard					//standard  PPM layout Robbe/Hitec/Sanwa	ROLL,PITCH,THROTTLE,YAW,MODE,AUX2,CAMPITCH,CAMROLL
+	TX_set2							//some Hitec/Sanwa/others									PITCH,ROLL,THROTTLE,YAW,AUX1,AUX2,CAMPITCH,CAMROLL
+	TX_mwi							//MultiWii layout													ROLL,THROTTLE,PITCH,YAW,AUX1,AUX2,CAMPITCH,CAMROLL
+  TX_JR               //JR layout                               FLAPS:MODE, GEAR:SAVE TRIMM = apm ch7
+*/
+
+// Select your baro sensor
+#define CONFIG_BARO AP_BARO_MS5611_I2C
+/*
+	AP_BARO_BMP085_PIRATES
+	AP_BARO_MS5611_I2C
+*/
+
+// Warning: COPTER_LEDS is not compatible with LED_SEQUENCER, so enable only one option
+// Connect LEDs to A4 - A7
+//#define COPTER_LEDS ENABLED				// Native ArduCopter LEDs
+//#define LED_SEQUENCER ENABLED		// Old Syberian's LED Sequencer, see leds.pde for more info
+
+#define MAX_SONAR_RANGE 400
+
+// Configure Optical Flow Sensor
+#define OPTFLOW ENABLED
+#define OPTFLOW_ORIENTATION AP_OPTICALFLOW_ADNS3080_PINS_BACK_RIGHT
+
+#define MPU6K_FILTER MPU6K_20HZ_FILTER
+
+// This OSD works on the Serial1 port
+#define OSD_PROTOCOL OSD_PROTOCOL_NONE
+/*
+	OSD_PROTOCOL_NONE
+	OSD_PROTOCOL_SYBERIAN
+	OSD_PROTOCOL_REMZIBI  // Read more at: http://www.rcgroups.com/forums/showthread.php?t=921467
+	OSD_PROTOCOL_FRSKY		// FrSky Telemetry protocol
+	OSD_PROTOCOL_MULTIWII	// Multiwii Serial protocol
+*/
+
+// For BlackVortex, just set PIRATES_SENSOR_BOARD as PIRATES_BLACKVORTEX, GPS will be selected automatically
+#define GPS_PROTOCOL GPS_PROTOCOL_UBLOX
+//GPS_PROTOCOL_NONE
+/*
+	GPS_PROTOCOL_NONE 	without GPS
+	GPS_PROTOCOL_NMEA
+	GPS_PROTOCOL_SIRF
+	GPS_PROTOCOL_UBLOX
+	GPS_PROTOCOL_MTK19
+	GPS_PROTOCOL_BLACKVORTEX
+	GPS_PROTOCOL_AUTO	auto select GPS, may not work
+*/
+	
+#define SERIAL0_BAUD			 115200	// Console port 
+#define SERIAL2_BAUD			 38400	// GPS port
+#define SERIAL3_BAUD			 57600	// Telemetry (MAVLINK) port
+
+// New in 2.0.43, but unused in MegairateNG
+// MPNG: Piezo uses AN5 pin in ArduCopter, we uses AN5 for CLI switch
+#define PIEZO	DISABLED	
+#define PIEZO_LOW_VOLTAGE	DISABLED
+#define PIEZO_ARMING		DISABLED
+
+#define FRAME_CONFIG QUAD_FRAME
+/*
  *  QUAD_FRAME
  *  TRI_FRAME
  *  HEXA_FRAME
@@ -25,16 +96,16 @@
  *  OCTA_FRAME
  *  OCTA_QUAD_FRAME
  *  HELI_FRAME
- */
+*/
 
-//#define FRAME_ORIENTATION X_FRAME
+#define FRAME_ORIENTATION X_FRAME
 /*
  *  PLUS_FRAME
  *  X_FRAME
  *  V_FRAME
- */
+*/
 
-//#define CH7_OPTION		CH7_SAVE_WP
+# define CH7_OPTION		CH7_DO_NOTHING
 /*
  *  CH7_DO_NOTHING
  *  CH7_FLIP
@@ -48,10 +119,6 @@
 // Inertia based contollers
 //#define INERTIAL_NAV_XY ENABLED
 #define INERTIAL_NAV_Z ENABLED
-
-//#define MOTORS_JD880
-//#define MOTORS_JD850
-
 
 // agmatthews USERHOOKS
 // the choice of function names is up to the user and does not have to match these
@@ -67,7 +134,15 @@
 // Ensure the defined file exists and is in the arducopter directory
 #define USERHOOK_VARIABLES "UserVariables.h"
 
-//#define LOGGING_ENABLED		DISABLED
+#if PIRATES_SENSOR_BOARD == PIRATES_CRIUS_AIO_PRO_V2
+	#define LOGGING_ENABLED		ENABLED
+#else
+	#define LOGGING_ENABLED		DISABLED
+#endif
+
+// ************** EXPERIMENTAL FEATURES *****************
 
 // #define LOITER_REPOSITIONING    ENABLED                         // Experimental Do Not Use
-// #define LOITER_RP               ROLL_PITCH_LOITER_PR
+// #define LOITER_RP               ROLL_PITCH_LOITER_PR                        // Experimental Do Not Use
+
+#endif //__ARDUCOPTER_APMCONFIG_H__

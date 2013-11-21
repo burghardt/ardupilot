@@ -100,6 +100,10 @@ private:
     float                           _tilt_angle; ///< degrees
     float                           _pan_angle;  ///< degrees
 
+    float                           _last_roll_angle; ///< radians
+    float                           _last_tilt_angle; ///< degrees
+    float                           _last_pan_angle;  ///< degrees
+
     // EEPROM parameters
     AP_Int8                         _stab_roll; ///< (1 = yes, 0 = no)
     AP_Int8                         _stab_tilt; ///< (1 = yes, 0 = no)

@@ -362,9 +362,12 @@ void AP_Mount::update_mount_position()
 #endif
 
     // write the results to the servos
-    move_servo(_roll_idx, _roll_angle*10, _roll_angle_min*0.1, _roll_angle_max*0.1);
-    move_servo(_tilt_idx, _tilt_angle*10, _tilt_angle_min*0.1, _tilt_angle_max*0.1);
-    move_servo(_pan_idx,  _pan_angle*10,  _pan_angle_min*0.1,  _pan_angle_max*0.1);
+    move_servo(_roll_idx, (_roll_angle+_last_roll_angle)*5, _roll_angle_min*0.1, _roll_angle_max*0.1);
+    move_servo(_tilt_idx, (_tilt_angle+_last_tilt_angle)*5, _tilt_angle_min*0.1, _tilt_angle_max*0.1);
+    move_servo(_pan_idx,  (_pan_angle+_last_pan_angle)*5,  _pan_angle_min*0.1,  _pan_angle_max*0.1);
+    _last_roll_angle = _roll_angle;
+    _last_tilt_angle = _tilt_angle;
+    _last_pan_angle = _pan_angle;
 }
 
 void AP_Mount::set_mode(enum MAV_MOUNT_MODE mode)

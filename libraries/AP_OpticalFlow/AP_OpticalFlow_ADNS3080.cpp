@@ -92,6 +92,7 @@ AP_OpticalFlow_ADNS3080::init(bool initCommAPI, AP_PeriodicProcess *scheduler, A
         retry++;
     }
 
+#ifdef ADNS3080_SPIBUS_3_ENABLED
     // if not found, check 3 times on SPI3
     if( !retvalue ) {
 
@@ -112,6 +113,7 @@ AP_OpticalFlow_ADNS3080::init(bool initCommAPI, AP_PeriodicProcess *scheduler, A
             retry++;
         }
     }
+#endif
 
     // resume timer
     scheduler->resume_timer();

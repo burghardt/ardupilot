@@ -4,8 +4,8 @@
 #define _DEFINES_H
 
 // Just so that it's completely clear...
-#define ENABLED                 1
-#define DISABLED                0
+#define ENABLED			1
+#define DISABLED		0
 
 // this avoids a very common config error
 #define ENABLE ENABLED
@@ -23,10 +23,10 @@
 #define YAW_TOY                         7       // THOR This is the Yaw mode
 
 
-#define ROLL_PITCH_STABLE       0
-#define ROLL_PITCH_ACRO         1
-#define ROLL_PITCH_AUTO         2
-#define ROLL_PITCH_STABLE_OF    3
+#define ROLL_PITCH_STABLE 	0
+#define ROLL_PITCH_ACRO 	1
+#define ROLL_PITCH_AUTO		2
+#define ROLL_PITCH_STABLE_OF	3
 #define ROLL_PITCH_TOY          4       // THOR This is the Roll and Pitch mode
 #define ROLL_PITCH_LOITER_PR    5
 
@@ -48,6 +48,7 @@
 
 #define SONAR_SOURCE_ADC 1
 #define SONAR_SOURCE_ANALOG_PIN 2
+#define SONAR_SOURCE_PIRATES 3
 
 // CH 7 control
 #define CH7_PWM_TRIGGER 1800    // pwm value above which the channel 7 option will be invoked
@@ -91,8 +92,8 @@
 
 #define TRUE 1
 #define FALSE 0
-#define ToRad(x) (x*0.01745329252)      // *pi/180
-#define ToDeg(x) (x*57.2957795131)      // *180/pi
+#define ToRad(x) (x*0.01745329252)	// *pi/180
+#define ToDeg(x) (x*57.2957795131)	// *180/pi
 
 #define DEBUG 0
 #define LOITER_RANGE 60 // for calculating power outside of loiter radius
@@ -101,42 +102,56 @@
 #define T7 10000000
 
 // GPS type codes - use the names, not the numbers
-#define GPS_PROTOCOL_NONE       -1
-#define GPS_PROTOCOL_NMEA       0
-#define GPS_PROTOCOL_SIRF       1
-#define GPS_PROTOCOL_UBLOX      2
-#define GPS_PROTOCOL_IMU        3
-#define GPS_PROTOCOL_MTK        4
-#define GPS_PROTOCOL_HIL        5
-#define GPS_PROTOCOL_MTK19      6
-#define GPS_PROTOCOL_AUTO       7
+#define GPS_PROTOCOL_NONE	-1
+#define GPS_PROTOCOL_NMEA	10
+#define GPS_PROTOCOL_SIRF	1
+#define GPS_PROTOCOL_UBLOX	2
+#define GPS_PROTOCOL_IMU	3
+#define GPS_PROTOCOL_MTK	4
+#define GPS_PROTOCOL_HIL	5
+#define GPS_PROTOCOL_MTK19	6
+#define GPS_PROTOCOL_AUTO	7
+#define GPS_PROTOCOL_UBLOX_I2C 8
+#define GPS_PROTOCOL_BLACKVORTEX 9
+
+// SONAR types:
+#define MAX_SONAR_UNKNOWN	0
+#define MAX_SONAR_XL		1
+#define SONAR_ME007		2
+
+// OSD Types
+#define	OSD_PROTOCOL_NONE 0
+#define	OSD_PROTOCOL_SYBERIAN 1
+#define	OSD_PROTOCOL_REMZIBI 2
+#define OSD_PROTOCOL_FRSKY 3
+#define OSD_PROTOCOL_MULTIWII 4
 
 // HIL enumerations
-#define HIL_MODE_DISABLED               0
-#define HIL_MODE_ATTITUDE               1
-#define HIL_MODE_SENSORS                2
+#define HIL_MODE_DISABLED			0
+#define HIL_MODE_ATTITUDE			1
+#define HIL_MODE_SENSORS			2
 
 // Altitude status definitions
-#define REACHED_ALT                     0
+#define REACHED_ALT			0
 #define DESCENDING                      1
 #define ASCENDING                       2
 
 // Auto Pilot modes
 // ----------------
-#define STABILIZE 0                     // hold level position
-#define ACRO 1                          // rate control
-#define ALT_HOLD 2                      // AUTO control
-#define AUTO 3                          // AUTO control
-#define GUIDED 4                        // AUTO control
-#define LOITER 5                        // Hold a single location
-#define RTL 6                           // AUTO control
-#define CIRCLE 7                        // AUTO control
-#define POSITION 8                      // AUTO control
-#define LAND 9                          // AUTO control
-#define OF_LOITER 10                    // Hold a single location using optical flow
-                                        // sensor
-#define TOY_A 11                        // THOR Enum for Toy mode
-#define TOY_M 12                        // THOR Enum for Toy mode
+#define STABILIZE 0			// hold level position
+#define ACRO 1				// rate control
+#define ALT_HOLD 2			// AUTO control
+#define AUTO 3				// AUTO control
+#define GUIDED 4			// AUTO control
+#define LOITER 5			// Hold a single location
+#define RTL 6				// AUTO control
+#define CIRCLE 7			// AUTO control
+#define POSITION 8			// AUTO control
+#define LAND 9				// AUTO control
+#define OF_LOITER 10            // Hold a single location using optical flow
+                                // sensor
+#define TOY_A 11                                // THOR Enum for Toy mode
+#define TOY_M 12                                // THOR Enum for Toy mode
 #define NUM_MODES 13
 
 // CH_6 Tuning
@@ -209,14 +224,14 @@
 
 
 // Waypoint options
-#define MASK_OPTIONS_RELATIVE_ALT               1
-#define WP_OPTION_ALT_CHANGE                    2
-#define WP_OPTION_YAW                           4
-#define WP_OPTION_ALT_REQUIRED                  8
-#define WP_OPTION_RELATIVE                      16
+#define MASK_OPTIONS_RELATIVE_ALT 		1
+#define WP_OPTION_ALT_CHANGE 		2
+#define WP_OPTION_YAW 				4
+#define WP_OPTION_ALT_REQUIRED		8
+#define WP_OPTION_RELATIVE			16
 //#define WP_OPTION_					32
 //#define WP_OPTION_					64
-#define WP_OPTION_NEXT_CMD                      128
+#define WP_OPTION_NEXT_CMD			128
 
 // RTL state
 #define RTL_STATE_INITIAL_CLIMB     0
@@ -267,43 +282,43 @@ enum gcs_severity {
 };
 
 //  Logging parameters
-#define TYPE_AIRSTART_MSG               0x00
-#define TYPE_GROUNDSTART_MSG            0x01
-#define LOG_ATTITUDE_MSG                0x01
-#define LOG_GPS_MSG                     0x02
+#define TYPE_AIRSTART_MSG		0x00
+#define TYPE_GROUNDSTART_MSG	0x01
+#define LOG_ATTITUDE_MSG		0x01
+#define LOG_GPS_MSG				0x02
 #define LOG_MODE_MSG                    0x03
 #define LOG_CONTROL_TUNING_MSG          0x04
 #define LOG_NAV_TUNING_MSG              0x05
 #define LOG_PERFORMANCE_MSG             0x06
-#define LOG_RAW_MSG                     0x07
-#define LOG_CMD_MSG                     0x08
-#define LOG_CURRENT_MSG                 0x09
-#define LOG_STARTUP_MSG                 0x0A
-#define LOG_MOTORS_MSG                  0x0B
-#define LOG_OPTFLOW_MSG                 0x0C
-#define LOG_DATA_MSG                    0x0D
-#define LOG_PID_MSG                     0x0E
+#define LOG_RAW_MSG				0x07
+#define LOG_CMD_MSG				0x08
+#define LOG_CURRENT_MSG 		0x09
+#define LOG_STARTUP_MSG 		0x0A
+#define LOG_MOTORS_MSG 			0x0B
+#define LOG_OPTFLOW_MSG 		0x0C
+#define LOG_DATA_MSG 			0x0D
+#define LOG_PID_MSG 			0x0E
 #define LOG_ITERM_MSG                   0x0F
 #define LOG_DMP_MSG                     0x10
 #define LOG_INAV_MSG                    0x11
 #define LOG_CAMERA_MSG                  0x12
 #define LOG_ERROR_MSG                   0x13
-#define LOG_INDEX_MSG                   0xF0
-#define MAX_NUM_LOGS                    50
+#define LOG_INDEX_MSG			0xF0
+#define MAX_NUM_LOGS			50
 
-#define MASK_LOG_ATTITUDE_FAST          (1<<0)
-#define MASK_LOG_ATTITUDE_MED           (1<<1)
-#define MASK_LOG_GPS                    (1<<2)
-#define MASK_LOG_PM                     (1<<3)
-#define MASK_LOG_CTUN                   (1<<4)
-#define MASK_LOG_NTUN                   (1<<5)
-#define MASK_LOG_MODE                   (1<<6)
-#define MASK_LOG_RAW                    (1<<7)
-#define MASK_LOG_CMD                    (1<<8)
-#define MASK_LOG_CUR                    (1<<9)
-#define MASK_LOG_MOTORS                 (1<<10)
-#define MASK_LOG_OPTFLOW                (1<<11)
-#define MASK_LOG_PID                    (1<<12)
+#define MASK_LOG_ATTITUDE_FAST 	(1<<0)
+#define MASK_LOG_ATTITUDE_MED 	(1<<1)
+#define MASK_LOG_GPS 			(1<<2)
+#define MASK_LOG_PM 			(1<<3)
+#define MASK_LOG_CTUN 			(1<<4)
+#define MASK_LOG_NTUN			(1<<5)
+#define MASK_LOG_MODE			(1<<6)
+#define MASK_LOG_RAW			(1<<7)
+#define MASK_LOG_CMD			(1<<8)
+#define MASK_LOG_CUR			(1<<9)
+#define MASK_LOG_MOTORS			(1<<10)
+#define MASK_LOG_OPTFLOW		(1<<11)
+#define MASK_LOG_PID			(1<<12)
 #define MASK_LOG_ITERM                  (1<<13)
 #define MASK_LOG_INAV                   (1<<14)
 #define MASK_LOG_CAMERA                 (1<<15)
@@ -383,6 +398,7 @@ enum gcs_severity {
 
 #define RELAY_APM1_PIN 47
 #define RELAY_APM2_PIN 13
+#define RELAY_CRIUSV2_PIN 46
 
 #define PIEZO_PIN AN5           //Last pin on the back ADC connector
 
@@ -392,7 +408,7 @@ enum gcs_severity {
 
 
 // EEPROM addresses
-#define EEPROM_MAX_ADDR         4096
+#define EEPROM_MAX_ADDR		4096
 // parameters get the first 1536 bytes of EEPROM, remainder is for waypoints
 #define WP_START_BYTE 0x600 // where in memory home WP is stored + all other
                             // WP
@@ -415,6 +431,8 @@ enum gcs_severity {
 // IMU selection
 #define CONFIG_IMU_OILPAN 1
 #define CONFIG_IMU_MPU6000 2
+#define CONFIG_IMU_PIRATES 3
+#define CONFIG_IMU_MPU6000_I2C 4
 
 // MPU6K Filter Rates
 # define MPU6K_DEFAULT_FILTER   0
@@ -429,9 +447,34 @@ enum gcs_severity {
 // APM Hardware selection
 #define APM_HARDWARE_APM1 1
 #define APM_HARDWARE_APM2 2
+#define APM_HARDWARE_PIRATES 3
+
+// Pirates sensors boards
+#define PIRATES_ALLINONE 0
+#define PIRATES_FFIMU 1
+#define PIRATES_FREEIMU 2
+#define PIRATES_BLACKVORTEX 3
+#define PIRATES_FREEIMU_4 4
+#define PIRATES_DROTEK_10DOF_MPU 5
+#define PIRATES_CRIUS_AIO_PRO_V1 6
+#define PIRATES_CRIUS_AIO_PRO_V2 7
 
 #define AP_BARO_BMP085    1
 #define AP_BARO_MS5611    2
+#define AP_BARO_BMP085_PIRATES    3
+#define AP_BARO_MS5611_I2C    4
+
+// Pirates Transmitter channel mappings
+#define TX_set1	1							//Graupner/Spektrum												PITCH,YAW,THROTTLE,ROLL,AUX1,AUX2,CAMPITCH,CAMROLL
+#define TX_standard	2					//standard  PPM layout Robbe/Hitec/Sanwa	ROLL,PITCH,THROTTLE,YAW,MODE,AUX2,CAMPITCH,CAMROLL
+#define TX_standard_mode6	3		//standard, Mode channel is 6  						ROLL,PITCH,THROTTLE,YAW,AUX1,MODE,CAMPITCH,CAMROLL
+#define TX_set2	4							//some Hitec/Sanwa/others									PITCH,ROLL,THROTTLE,YAW,AUX1,AUX2,CAMPITCH,CAMROLL
+#define TX_mwi	5							//MultiWii layout													ROLL,THROTTLE,PITCH,YAW,AUX1,AUX2,CAMPITCH,CAMROLL
+#define TX_JR   6
+
+//#define SERIAL_PPM_DISABLED 0
+//#define SERIAL_PPM_ENABLED  1
+//#define SERIAL_PPM_ENABLED_PL1 2
 
 // Error message sub systems and error codes
 #define ERROR_SUBSYSTEM_MAIN                1
@@ -448,7 +491,5 @@ enum gcs_severity {
 #define ERROR_CODE_FAILSAFE_THROTTLE  2
 #define ERROR_CODE_FAILSAFE_BATTERY   3
 #define ERROR_CODE_FAILSAFE_WATCHDOG  4
-
-
 
 #endif // _DEFINES_H

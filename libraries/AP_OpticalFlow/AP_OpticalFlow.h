@@ -44,7 +44,23 @@ public:
     float                   change_x, change_y;
     float                   x_cm, y_cm;
 
-    AP_OpticalFlow() {
+    AP_OpticalFlow() :
+        raw_dx(0), raw_dy(0),
+        surface_quality(0),
+        x(0), y(0),
+        dx(0), dy(0),
+        vlon(0), vlat(0),
+        last_update(0),
+        field_of_view(0),
+        scaler(0),
+        num_pixels(0),
+        exp_change_x(0), exp_change_y(0),
+        change_x(0), change_y(0),
+        x_cm(0), y_cm(0),
+        conv_factor(0),
+        radians_to_pixels(0),
+        _last_roll(0), _last_pitch(0), _last_altitude(0)
+    {
         _sensor = this;
     };
     ~AP_OpticalFlow() {
@@ -55,7 +71,7 @@ public:
     virtual void                    write_register(byte address, byte value);
     virtual void                    set_orientation(enum Rotation rotation); // Rotation vector to transform sensor readings to the body frame.
     virtual void                    set_field_of_view(const float fov) { field_of_view = fov; update_conversion_factors(); };   // sets field of view of sensor
-    static void                     read(uint32_t now);   // called by timer process to read sensor data from all attached sensors
+    static bool                     read(uint32_t now);   // called by timer process to read sensor data from all attached sensors
     virtual void                    update(uint32_t now); // read latest values from sensor and fill in x,y and totals.
     virtual void                    update_position(float roll, float pitch, float cos_yaw_x, float sin_yaw_y, float altitude); // updates internal lon and lat with estimation based on optical flow
 

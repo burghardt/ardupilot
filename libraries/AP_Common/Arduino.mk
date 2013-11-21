@@ -334,7 +334,7 @@ LIBOBJS			:=	$(SKETCHLIBOBJS) $(ARDUINOLIBOBJS)
 #
 
 # Pull the Arduino version
-ARDUINO_VERS	:=	$(shell $(SKETCHBOOK)/Tools/scripts/arduino_version.sh $(ARDUINO))
+ARDUINO_VERS	:=	$(shell $(SKETCHBOOK)/tools/scripts/arduino_version.sh $(ARDUINO))
 
 # Find the hardware directory to use
 HARDWARE_DIR		:=	$(firstword $(wildcard $(SKETCHBOOK)/hardware/$(HARDWARE) \

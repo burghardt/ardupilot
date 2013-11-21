@@ -6,8 +6,6 @@
 #ifndef AP_LeadFilter_h
 #define AP_LeadFilter_h
 
-#include <AP_LeadFilter.h>
-
 /// @class	AP_LeadFilter
 /// @brief	Object managing GPS lag
 class AP_LeadFilter {

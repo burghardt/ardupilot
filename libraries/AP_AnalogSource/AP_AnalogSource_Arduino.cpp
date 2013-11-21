@@ -16,8 +16,8 @@ static uint8_t num_pins_watched;
 static uint8_t next_pin_index;
 static uint8_t next_pin_count;
 static volatile struct {
-    uint8_t pin;
-    uint8_t sum_count;
+    uint8_t  pin;
+    uint8_t  sum_count;
     uint16_t output;
     uint16_t sum;
 } pins[MAX_PIN_SOURCES];
@@ -25,16 +25,16 @@ static volatile struct {
 // ADC conversion timer. This is called at 1kHz by the timer
 // interrupt
 // each conversion takes about 125 microseconds
-static void adc_timer(uint32_t t)
+static bool adc_timer(uint32_t t)
 {
     if (pins[next_pin_index].pin == ANALOG_PIN_NONE) {
         goto next_pin;
     }
 
-    if (bit_is_set(ADCSRA, ADSC) || num_pins_watched == 0) {
+	if (bit_is_set(ADCSRA, ADSC) || num_pins_watched == 0) {
         // conversion is still running. This should be
         // very rare, as we are called at 1kHz
-        return;
+        return false;
     }
 
     next_pin_count++;
@@ -42,14 +42,14 @@ static void adc_timer(uint32_t t)
         // we don't want this value, so start the next conversion
         // immediately, discarding this value
         ADCSRA |= _BV(ADSC);
-        return;
+        return false;
     }
 
     // remember the value we got
     {
-        uint8_t low  = ADCL;
-        uint8_t high = ADCH;
-        pins[next_pin_index].output = low | (high<<8);
+    uint8_t low  = ADCL;
+    uint8_t high = ADCH;
+    pins[next_pin_index].output = low | (high<<8);
     }
     pins[next_pin_index].sum += pins[next_pin_index].output;
     if (pins[next_pin_index].sum_count >= 63) {
@@ -83,9 +83,10 @@ next_pin:
         ADCSRB = (ADCSRB & ~(1 << MUX5)) | (((pin >> 3) & 0x01) << MUX5);
         ADMUX = _BV(REFS0) | (pin & 0x07);
 
-        // start the next conversion
-        ADCSRA |= _BV(ADSC);
-    }
+	// start the next conversion
+    ADCSRA |= _BV(ADSC);
+}
+return false;
 }
 
 // setup the timer process. This must be called before any analog
@@ -183,8 +184,8 @@ void AP_AnalogSource_Arduino::_assign_pin_index(uint8_t pin)
     num_pins_watched++;
     if (num_pins_watched == 1) {
         // enable the ADC
-        PRR0 &= ~_BV(PRADC);
-        ADCSRA |= _BV(ADEN);
+		PRR0 &= ~_BV(PRADC);
+		ADCSRA |= _BV(ADEN);
     }
 }
 

@@ -4,45 +4,48 @@
 
 // These are function definitions so the Menu can be constructed before the functions
 // are defined below. Order matters to the compiler.
-static int8_t   test_radio_pwm(uint8_t argc,    const Menu::arg *argv);
-static int8_t   test_radio(uint8_t argc,                const Menu::arg *argv);
-//static int8_t	test_failsafe(uint8_t argc,     const Menu::arg *argv);
-//static int8_t	test_stabilize(uint8_t argc,    const Menu::arg *argv);
-static int8_t   test_gps(uint8_t argc,                  const Menu::arg *argv);
-//static int8_t	test_tri(uint8_t argc,          const Menu::arg *argv);
-//static int8_t	test_adc(uint8_t argc,          const Menu::arg *argv);
-static int8_t   test_ins(uint8_t argc,                  const Menu::arg *argv);
-//static int8_t	test_imu(uint8_t argc,          const Menu::arg *argv);
-//static int8_t	test_dcm_eulers(uint8_t argc,   const Menu::arg *argv);
-//static int8_t	test_dcm(uint8_t argc,          const Menu::arg *argv);
-//static int8_t	test_omega(uint8_t argc,        const Menu::arg *argv);
-//static int8_t	test_stab_d(uint8_t argc,       const Menu::arg *argv);
-static int8_t   test_battery(uint8_t argc,              const Menu::arg *argv);
-//static int8_t	test_toy(uint8_t argc,      const Menu::arg *argv);
+static int8_t	test_radio_pwm(uint8_t argc, 	const Menu::arg *argv);
+static int8_t	test_radio(uint8_t argc, 		const Menu::arg *argv);
+//static int8_t	test_failsafe(uint8_t argc, 	const Menu::arg *argv);
+//static int8_t	test_stabilize(uint8_t argc, 	const Menu::arg *argv);
+static int8_t	test_gps(uint8_t argc, 			const Menu::arg *argv);
+//static int8_t	test_tri(uint8_t argc, 			const Menu::arg *argv);
+//static int8_t	test_adc(uint8_t argc, 			const Menu::arg *argv);
+static int8_t	test_ins(uint8_t argc, 			const Menu::arg *argv);
+//static int8_t	test_imu(uint8_t argc, 			const Menu::arg *argv);
+//static int8_t	test_dcm_eulers(uint8_t argc, 	const Menu::arg *argv);
+//static int8_t	test_dcm(uint8_t argc, 			const Menu::arg *argv);
+//static int8_t	test_omega(uint8_t argc, 		const Menu::arg *argv);
+//static int8_t	test_stab_d(uint8_t argc, 		const Menu::arg *argv);
+static int8_t	test_battery(uint8_t argc, 		const Menu::arg *argv);
+//static int8_t	test_toy(uint8_t argc, 		const Menu::arg *argv);
 static int8_t   test_wp_nav(uint8_t argc,               const Menu::arg *argv);
-//static int8_t	test_reverse(uint8_t argc,      const Menu::arg *argv);
-static int8_t   test_tuning(uint8_t argc,               const Menu::arg *argv);
-static int8_t   test_relay(uint8_t argc,                const Menu::arg *argv);
-static int8_t   test_wp(uint8_t argc,                   const Menu::arg *argv);
+//static int8_t	test_reverse(uint8_t argc, 		const Menu::arg *argv);
+static int8_t	test_tuning(uint8_t argc, 		const Menu::arg *argv);
+static int8_t	test_relay(uint8_t argc,	 	const Menu::arg *argv);
+static int8_t	test_wp(uint8_t argc, 			const Menu::arg *argv);
 #if HIL_MODE != HIL_MODE_ATTITUDE
-static int8_t   test_baro(uint8_t argc,                 const Menu::arg *argv);
-static int8_t   test_sonar(uint8_t argc,                const Menu::arg *argv);
+static int8_t	test_baro(uint8_t argc, 		const Menu::arg *argv);
+static int8_t	test_sonar(uint8_t argc, 		const Menu::arg *argv);
 #endif
-static int8_t   test_mag(uint8_t argc,                  const Menu::arg *argv);
-static int8_t   test_optflow(uint8_t argc,              const Menu::arg *argv);
-static int8_t   test_logging(uint8_t argc,              const Menu::arg *argv);
-//static int8_t	test_xbee(uint8_t argc,         const Menu::arg *argv);
-static int8_t   test_eedump(uint8_t argc,               const Menu::arg *argv);
-static int8_t   test_rawgps(uint8_t argc,               const Menu::arg *argv);
-//static int8_t	test_mission(uint8_t argc,      const Menu::arg *argv);
+static int8_t	test_mag(uint8_t argc, 			const Menu::arg *argv);
+static int8_t	test_optflow(uint8_t argc, 		const Menu::arg *argv);
+
+#if PIRATES_SENSOR_BOARD == PIRATES_CRIUS_AIO_PRO_V2
+	static int8_t	test_logging(uint8_t argc, 		const Menu::arg *argv);
+#endif
+//static int8_t	test_xbee(uint8_t argc, 		const Menu::arg *argv);
+static int8_t	test_eedump(uint8_t argc, 		const Menu::arg *argv);
+static int8_t	test_rawgps(uint8_t argc, 		const Menu::arg *argv);
+//static int8_t	test_mission(uint8_t argc, 		const Menu::arg *argv);
 
 // this is declared here to remove compiler errors
-extern void             print_latlon(BetterStream *s, int32_t lat_or_lon);      // in Log.pde
+extern void		print_latlon(BetterStream *s, int32_t lat_or_lon);	// in Log.pde
 
 // This is the help function
 // PSTR is an AVR macro to read strings from flash memory
 // printf_P is a version of printf that reads from flash memory
-/*static int8_t	help_test(uint8_t argc,             const Menu::arg *argv)
+/*static int8_t	help_test(uint8_t argc, 			const Menu::arg *argv)
  *  {
  *       cliSerial->printf_P(PSTR("\n"
  *                                                "Commands:\n"
@@ -59,34 +62,36 @@ extern void             print_latlon(BetterStream *s, int32_t lat_or_lon);      
 // User enters the string in the console to call the functions on the right.
 // See class Menu in AP_Coommon for implementation details
 const struct Menu::command test_menu_commands[] PROGMEM = {
-    {"pwm",                 test_radio_pwm},
-    {"radio",               test_radio},
+	{"pwm",			test_radio_pwm},
+	{"radio",		test_radio},
 //	{"failsafe",	test_failsafe},
 //	{"stabilize",	test_stabilize},
-    {"gps",                 test_gps},
-//	{"adc",         test_adc},
-    {"ins",                 test_ins},
+	{"gps",			test_gps},
+//	{"adc", 		test_adc},
+	{"ins", 		test_ins},
 //	{"dcm",			test_dcm_eulers},
-    //{"omega",		test_omega},
+	//{"omega",		test_omega},
 //	{"stab_d",		test_stab_d},
-    {"battery",             test_battery},
-    {"tune",                test_tuning},
-    //{"tri",			test_tri},
-    {"relay",               test_relay},
-    {"wp",                  test_wp},
+	{"battery",		test_battery},
+	{"tune",		test_tuning},
+	//{"tri",			test_tri},
+	{"relay",		test_relay},
+	{"wp",			test_wp},
 //	{"toy",			test_toy},
 #if HIL_MODE != HIL_MODE_ATTITUDE
-    {"altitude",    test_baro},
-    {"sonar",               test_sonar},
+	{"altitude",	test_baro},
+	{"sonar",		test_sonar},
 #endif
-    {"compass",             test_mag},
-    {"optflow",             test_optflow},
-    //{"xbee",		test_xbee},
-    {"eedump",              test_eedump},
-    {"logging",             test_logging},
-//	{"rawgps",		test_rawgps},
+	{"compass",		test_mag},
+	{"optflow",		test_optflow},
+	//{"xbee",		test_xbee},
+	{"eedump",		test_eedump},
+#if PIRATES_SENSOR_BOARD == PIRATES_CRIUS_AIO_PRO_V2
+	{"logging",		test_logging},
+#endif
+	{"rawgps",		test_rawgps},
 //	{"mission",		test_mission},
-    //{"reverse",		test_reverse},
+	//{"reverse",		test_reverse},
     {"nav",                 test_wp_nav},
 };
 
@@ -96,9 +101,9 @@ MENU(test_menu, "test", test_menu_commands);
 static int8_t
 test_mode(uint8_t argc, const Menu::arg *argv)
 {
-    //cliSerial->printf_P(PSTR("Test Mode\n\n"));
-    test_menu.run();
-    return 0;
+	//cliSerial->printf_P(PSTR("Test Mode\n\n"));
+	test_menu.run();
+	return 0;
 }
 
 static int8_t
@@ -106,53 +111,16 @@ test_eedump(uint8_t argc, const Menu::arg *argv)
 {
     uintptr_t i, j;
 
-    // hexdump the EEPROM
-    for (i = 0; i < EEPROM_MAX_ADDR; i += 16) {
-        cliSerial->printf_P(PSTR("%04x:"), i);
-        for (j = 0; j < 16; j++)
-            cliSerial->printf_P(PSTR(" %02x"), eeprom_read_byte((const uint8_t *)(i + j)));
-        cliSerial->println();
-    }
-    return(0);
+	// hexdump the EEPROM
+	for (i = 0; i < EEPROM_MAX_ADDR; i += 16) {
+		cliSerial->printf_P(PSTR("%04x:"), i);
+		for (j = 0; j < 16; j++)
+			cliSerial->printf_P(PSTR(" %02x"), eeprom_read_byte((const uint8_t *)(i + j)));
+		cliSerial->println();
+	}
+	return(0);
 }
 
-
-static int8_t
-test_radio_pwm(uint8_t argc, const Menu::arg *argv)
-{
-#if defined( __AVR_ATmega1280__ )          // test disabled to save code size for 1280
-    print_test_disabled();
-    return (0);
-#else
-    print_hit_enter();
-    delay(1000);
-
-    while(1) {
-        delay(20);
-
-        // Filters radio input - adjust filters in the radio.pde file
-        // ----------------------------------------------------------
-        read_radio();
-
-        // servo Yaw
-        //APM_RC.OutputCh(CH_7, g.rc_4.radio_out);
-
-        cliSerial->printf_P(PSTR("IN: 1: %d\t2: %d\t3: %d\t4: %d\t5: %d\t6: %d\t7: %d\t8: %d\n"),
-                        g.rc_1.radio_in,
-                        g.rc_2.radio_in,
-                        g.rc_3.radio_in,
-                        g.rc_4.radio_in,
-                        g.rc_5.radio_in,
-                        g.rc_6.radio_in,
-                        g.rc_7.radio_in,
-                        g.rc_8.radio_in);
-
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
-    }
-#endif
-}
 
 /*
  *  //static int8_t
@@ -204,9 +172,9 @@ test_radio_pwm(uint8_t argc, const Menu::arg *argv)
 		max_speed = min(max_speed, g.waypoint_speed_max);
 		cliSerial->printf("Zspeed: %ld, %d, %ld\n", temp, max_speed, wp_distance);
 	 	wp_distance += 100;
-	}
+		}
  	return 0;
- }
+	}
 //*/
 
 /*static int8_t
@@ -236,26 +204,26 @@ test_radio_pwm(uint8_t argc, const Menu::arg *argv)
 static int8_t
 test_radio(uint8_t argc, const Menu::arg *argv)
 {
-    print_hit_enter();
-    delay(1000);
+	print_hit_enter();
+	delay(1000);
 
-    while(1) {
-        delay(20);
-        read_radio();
+	while(1){
+		delay(20);
+		read_radio();
 
 
-        cliSerial->printf_P(PSTR("IN  1: %d\t2: %d\t3: %d\t4: %d\t5: %d\t6: %d\t7: %d\n"),
-                        g.rc_1.control_in,
-                        g.rc_2.control_in,
-                        g.rc_3.control_in,
-                        g.rc_4.control_in,
-                        g.rc_5.control_in,
-                        g.rc_6.control_in,
-                        g.rc_7.control_in);
+		cliSerial->printf_P(PSTR("IN  1: %d\t2: %d\t3: %d\t4: %d\t5: %d\t6: %d\t7: %d\n"),
+							g.rc_1.control_in,
+							g.rc_2.control_in,
+							g.rc_3.control_in,
+							g.rc_4.control_in,
+							g.rc_5.control_in,
+							g.rc_6.control_in,
+							g.rc_7.control_in);
 
-        //cliSerial->printf_P(PSTR("OUT 1: %d\t2: %d\t3: %d\t4: %d\n"), (g.rc_1.servo_out / 100), (g.rc_2.servo_out / 100), g.rc_3.servo_out, (g.rc_4.servo_out / 100));
+		//cliSerial->printf_P(PSTR("OUT 1: %d\t2: %d\t3: %d\t4: %d\n"), (g.rc_1.servo_out / 100), (g.rc_2.servo_out / 100), g.rc_3.servo_out, (g.rc_4.servo_out / 100));
 
-        /*cliSerial->printf_P(PSTR(	"min: %d"
+		/*cliSerial->printf_P(PSTR(	"min: %d"
          *                                               "\t in: %d"
          *                                               "\t pwm_in: %d"
          *                                               "\t sout: %d"
@@ -266,11 +234,11 @@ test_radio(uint8_t argc, const Menu::arg *argv)
          *                                               g.rc_3.servo_out,
          *                                               g.rc_3.pwm_out
          *                                               );
-         */
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
-    }
+		*/
+		if(cliSerial->available() > 0){
+			return (0);
+		}
+	}
 }
 
 /*
@@ -327,7 +295,7 @@ test_radio(uint8_t argc, const Menu::arg *argv)
  *               return (0);
  * #endif
  *  }
- */
+*/
 
 /*
  *  //static int8_t
@@ -417,7 +385,7 @@ test_radio(uint8_t argc, const Menu::arg *argv)
  *               }
  *       }
  *  }
- */
+*/
 
 
 /*
@@ -445,32 +413,32 @@ test_radio(uint8_t argc, const Menu::arg *argv)
  *       }
  *  }
  * #endif
- */
+*/
 
 static int8_t
 test_ins(uint8_t argc, const Menu::arg *argv)
 {
-#if defined( __AVR_ATmega1280__ )          // test disabled to save code size for 1280
-    print_test_disabled();
-    return (0);
-#else
+	#if defined( __AVR_ATmega1280__ )  // test disabled to save code size for 1280
+		print_test_disabled();
+		return (0);
+	#else
     Vector3f gyro, accel;
     float temp;
-    print_hit_enter();
+		print_hit_enter();
     cliSerial->printf_P(PSTR("INS\n"));
-    delay(1000);
+		delay(1000);
 
     ins.init(AP_InertialSensor::COLD_START, 
              ins_sample_rate,
              delay, flash_leds, &timer_scheduler);
 
-    delay(50);
+		delay(50);
 
-    while(1) {
-        ins.update();
+		while(1){
+			ins.update();
         gyro = ins.get_gyro();
         accel = ins.get_accel();
-        temp = ins.temperature();
+			temp = ins.temperature();
 
         float test = sqrt(sq(accel.x) + sq(accel.y) + sq(accel.z)) / 9.80665;
 
@@ -479,52 +447,52 @@ test_ins(uint8_t argc, const Menu::arg *argv)
             gyro.x, gyro.y, gyro.z,
             temp, test);
 
-        delay(40);
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
-    }
-#endif
+			delay(40);
+			if(cliSerial->available() > 0){
+				return (0);
+			}
+		}
+	#endif
 }
 
 static int8_t
 test_gps(uint8_t argc, const Menu::arg *argv)
 {
     // test disabled to save code size for 1280
-#if defined( __AVR_ATmega1280__ ) || HIL_MODE != HIL_MODE_DISABLED
-    print_test_disabled();
-    return (0);
-#else
-    print_hit_enter();
-    delay(1000);
+	#if defined( __AVR_ATmega1280__ ) || HIL_MODE != HIL_MODE_DISABLED
+		print_test_disabled();
+		return (0);
+	#else
+		print_hit_enter();
+		delay(1000);
 
-    while(1) {
-        delay(333);
+		while(1){
+			delay(333);
 
-        // Blink GPS LED if we don't have a fix
-        // ------------------------------------
-        update_GPS_light();
+			// Blink GPS LED if we don't have a fix
+			// ------------------------------------
+			update_GPS_light();
 
-        g_gps->update();
+			g_gps->update();
 
-        if (g_gps->new_data) {
-            cliSerial->printf_P(PSTR("Lat: "));
-            print_latlon(&Serial, g_gps->latitude);
-            cliSerial->printf_P(PSTR(", Lon "));
-            print_latlon(&Serial, g_gps->longitude);
-            cliSerial->printf_P(PSTR(", Alt: %ldm, #sats: %d\n"),
-                            g_gps->altitude/100,
-                            g_gps->num_sats);
-            g_gps->new_data = false;
-        }else{
+			if (g_gps->new_data){
+				cliSerial->printf_P(PSTR("Lat: "));
+				print_latlon(&Serial, g_gps->latitude);
+				cliSerial->printf_P(PSTR(", Lon "));
+				print_latlon(&Serial, g_gps->longitude);
+				cliSerial->printf_P(PSTR(", Alt: %ldm, #sats: %d\n"),
+						g_gps->altitude/100,
+						g_gps->num_sats);
+				g_gps->new_data = false;
+			}else{
             cliSerial->print_P(PSTR("."));
-        }
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
-    }
-    return 0;
-#endif
+			}
+			if(cliSerial->available() > 0){
+				return (0);
+			}
+		}
+		return 0;
+	#endif
 }
 
 /*
@@ -577,7 +545,7 @@ test_gps(uint8_t argc, const Menu::arg *argv)
  *               }
  *       }
  *  }
- */
+*/
 /*
  *  //static int8_t
  *  //test_dcm(uint8_t argc, const Menu::arg *argv)
@@ -600,7 +568,7 @@ test_gps(uint8_t argc, const Menu::arg *argv)
  *               }
  *       }
  *  }
- */
+*/
 
 /*static int8_t
  *  //test_omega(uint8_t argc, const Menu::arg *argv)
@@ -643,138 +611,136 @@ test_gps(uint8_t argc, const Menu::arg *argv)
 static int8_t
 test_tuning(uint8_t argc, const Menu::arg *argv)
 {
-    print_hit_enter();
+	print_hit_enter();
 
-    while(1) {
-        delay(200);
-        read_radio();
-        tuning();
-        cliSerial->printf_P(PSTR("tune: %1.3f\n"), tuning_value);
+	while(1){
+		delay(200);
+		read_radio();
+		tuning();
+		cliSerial->printf_P(PSTR("tune: %1.3f\n"), tuning_value);
 
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
-    }
+		if(cliSerial->available() > 0){
+			return (0);
+		}
+	}
 }
 
 static int8_t
 test_battery(uint8_t argc, const Menu::arg *argv)
 {
-#if defined( __AVR_ATmega1280__ )          // disable this test if we are using 1280
-    print_test_disabled();
-    return (0);
-#else
-    cliSerial->printf_P(PSTR("\nCareful! Motors will spin! Press Enter to start.\n"));
-    cliSerial->flush();
-    while(!cliSerial->available()) {
-        delay(100);
-    }
-    cliSerial->flush();
-    print_hit_enter();
+	#if defined( __AVR_ATmega1280__ )  // disable this test if we are using 1280
+		print_test_disabled();
+		return (0);
+	#else
+		cliSerial->printf_P(PSTR("\nCareful! Motors will spin! Press Enter to start.\n"));
+		cliSerial->flush();
+		while(!cliSerial->available()){
+			delay(100);
+		}
+		cliSerial->flush();
+		print_hit_enter();
 
-    // allow motors to spin
-    motors.enable();
-    motors.armed(true);
+		// allow motors to spin
+		motors.enable();
+		motors.armed(true);
 
-    while(1) {
-        delay(100);
-        read_radio();
-        read_battery();
-        if (g.battery_monitoring == 3) {
-            cliSerial->printf_P(PSTR("V: %4.4f\n"),
-                            battery_voltage1,
-                            current_amps1,
-                            current_total1);
-        } else {
-            cliSerial->printf_P(PSTR("V: %4.4f, A: %4.4f, Ah: %4.4f\n"),
-                            battery_voltage1,
-                            current_amps1,
-                            current_total1);
-        }
-        motors.throttle_pass_through();
+		while(1){
+			delay(100);
+			read_radio();
+			read_battery();
+			if (g.battery_monitoring == 3){
+				cliSerial->printf_P(PSTR("V: %4.4f\n"),
+									battery_voltage1,
+									current_amps1,
+									current_total1);
+			} else {
+				cliSerial->printf_P(PSTR("V: %4.4f, A: %4.4f, Ah: %4.4f\n"),
+									battery_voltage1,
+									current_amps1,
+									current_total1);
+			}
+			motors.throttle_pass_through();
 
-        if(cliSerial->available() > 0) {
-            motors.armed(false);
-            return (0);
-        }
-    }
-    motors.armed(false);
-    return (0);
-#endif
+			if(cliSerial->available() > 0){
+				motors.armed(false);
+				return (0);
+			}
+		}
+		motors.armed(false);
+		return (0);
+	#endif
 }
 
 static int8_t test_relay(uint8_t argc, const Menu::arg *argv)
 {
-#if defined( __AVR_ATmega1280__ )          // test disabled to save code size for 1280
-    print_test_disabled();
-    return (0);
-#else
+	#if defined( __AVR_ATmega1280__ )  // test disabled to save code size for 1280
+		print_test_disabled();
+		return (0);
+	#else
 
-    print_hit_enter();
-    delay(1000);
+		print_hit_enter();
+		delay(1000);
 
-    while(1) {
-        cliSerial->printf_P(PSTR("Relay on\n"));
-        relay.on();
-        delay(3000);
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
+		while(1){
+			cliSerial->printf_P(PSTR("Relay on\n"));
+			relay.on();
+			delay(3000);
+			if(cliSerial->available() > 0){
+				return (0);
+			}
 
-        cliSerial->printf_P(PSTR("Relay off\n"));
-        relay.off();
-        delay(3000);
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
-    }
-#endif
+			cliSerial->printf_P(PSTR("Relay off\n"));
+			relay.off();
+			delay(3000);
+			if(cliSerial->available() > 0){
+				return (0);
+			}
+		}
+	#endif
 }
 
 
 static int8_t
 test_wp(uint8_t argc, const Menu::arg *argv)
 {
-    delay(1000);
+	delay(1000);
 
-    // save the alitude above home option
-    cliSerial->printf_P(PSTR("Hold alt "));
+	// save the alitude above home option
+	cliSerial->printf_P(PSTR("Hold alt "));
     if(g.rtl_altitude < 0) {
-        cliSerial->printf_P(PSTR("\n"));
-    }else{
+		cliSerial->printf_P(PSTR("\n"));
+	}else{
         cliSerial->printf_P(PSTR("of %dm\n"), (int)g.rtl_altitude / 100);
-    }
+	}
 
-    cliSerial->printf_P(PSTR("%d wp\n"), (int)g.command_total);
-    cliSerial->printf_P(PSTR("Hit rad: %dm\n"), (int)g.waypoint_radius);
-    //cliSerial->printf_P(PSTR("Loiter radius: %d\n\n"), (int)g.loiter_radius);
+	cliSerial->printf_P(PSTR("%d wp\n"), (int)g.command_total);
+	cliSerial->printf_P(PSTR("Hit rad: %dm\n"), (int)g.waypoint_radius);
+	//cliSerial->printf_P(PSTR("Loiter radius: %d\n\n"), (int)g.loiter_radius);
 
-    report_wp();
+	report_wp();
 
-    return (0);
+	return (0);
 }
 
-//static int8_t test_rawgps(uint8_t argc, const Menu::arg *argv) {
-/*
- *  print_hit_enter();
- *  delay(1000);
- *  while(1){
- *          if (Serial3.available()){
- *                          digitalWrite(B_LED_PIN, LED_ON); // Blink Yellow LED if we are sending data to GPS
- *                          Serial1.write(Serial3.read());
- *                          digitalWrite(B_LED_PIN, LED_OFF);
- *          }
- *          if (Serial1.available()){
- *                          digitalWrite(C_LED_PIN, LED_ON); // Blink Red LED if we are receiving data from GPS
- *                          Serial3.write(Serial1.read());
- *                          digitalWrite(C_LED_PIN, LED_OFF);
- *          }
- *          if(cliSerial->available() > 0){
- *                          return (0);
- *  }
- *  }
- */
-//}
+static int8_t test_rawgps(uint8_t argc, const Menu::arg *argv) {
+	#if defined( __AVR_ATmega1280__ )  // determines if optical flow code is included
+		print_test_disabled();
+		return (0);
+	#else
+   print_hit_enter();
+   delay(1000);
+	while(1){
+        if (Serial2.available()){
+					digitalWrite(C_LED_PIN, LED_ON); 		// Blink C LED if we are receiving data from GPS
+					cliSerial->write(Serial2.read());
+				   digitalWrite(C_LED_PIN, LED_OFF);
+		   }
+		   if(cliSerial->available() > 0){
+				   return (0);
+	 }
+   }
+	#endif
+}
 
 /*static int8_t
  *  //test_xbee(uint8_t argc, const Menu::arg *argv)
@@ -792,36 +758,36 @@ test_wp(uint8_t argc, const Menu::arg *argv)
  *               }
  *       }
  *  }
- */
+*/
 
 #if HIL_MODE != HIL_MODE_ATTITUDE
 static int8_t
 test_baro(uint8_t argc, const Menu::arg *argv)
 {
- #if defined( __AVR_ATmega1280__ )         // test disabled to save code size for 1280
-    print_test_disabled();
-    return (0);
- #else
-    print_hit_enter();
-    init_barometer();
+	#if defined( __AVR_ATmega1280__ )  // test disabled to save code size for 1280
+		print_test_disabled();
+		return (0);
+	#else
+		print_hit_enter();
+		init_barometer();
 
-    while(1) {
-        delay(100);
-        int32_t alt = read_barometer();                 // calls barometer.read()
+		while(1){
+			delay(100);
+			int32_t alt = read_barometer(); // calls barometer.read()
 
-        int32_t pres = barometer.get_pressure();
-        int16_t temp = barometer.get_temperature();
-        int32_t raw_pres = barometer.get_raw_pressure();
-        int32_t raw_temp = barometer.get_raw_temp();
-        cliSerial->printf_P(PSTR("alt: %ldcm, pres: %ldmbar, temp: %d/100degC,"
-                             " raw pres: %ld, raw temp: %ld\n"),
-                        alt, pres,temp, raw_pres, raw_temp);
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
-    }
-    return 0;
- #endif
+			int32_t pres = barometer.get_pressure();
+			int16_t temp = barometer.get_temperature();
+			int32_t raw_pres = barometer.get_raw_pressure();
+			int32_t raw_temp = barometer.get_raw_temp();
+			cliSerial->printf_P(PSTR("alt: %ldcm, pres: %ldmbar, temp: %d/100degC,"
+								 " raw pres: %ld, raw temp: %ld\n"),
+								 alt, pres ,temp, raw_pres, raw_temp);
+			if(cliSerial->available() > 0){
+				return (0);
+			}
+		}
+		return 0;
+	#endif
 }
 #endif
 
@@ -829,37 +795,37 @@ test_baro(uint8_t argc, const Menu::arg *argv)
 static int8_t
 test_mag(uint8_t argc, const Menu::arg *argv)
 {
-#if defined( __AVR_ATmega1280__ )          // test disabled to save code size for 1280
-    print_test_disabled();
-    return (0);
-#else
-    if(g.compass_enabled) {
-        print_hit_enter();
+	#if defined( __AVR_ATmega1280__ )  // test disabled to save code size for 1280
+		print_test_disabled();
+		return (0);
+	#else
+		if(g.compass_enabled) {
+			print_hit_enter();
 
-        while(1) {
-            delay(100);
-            if (compass.read()) {
-                float heading = compass.calculate_heading(ahrs.get_dcm_matrix());
-                cliSerial->printf_P(PSTR("Heading: %ld, XYZ: %d, %d, %d\n"),
-                                (wrap_360(ToDeg(heading) * 100)) /100,
-                                compass.mag_x,
-                                compass.mag_y,
-                                compass.mag_z);
-            } else {
-                cliSerial->println_P(PSTR("not healthy"));
-            }
+			while(1){
+				delay(100);
+				if (compass.read()) {
+					float heading = compass.calculate_heading(ahrs.get_dcm_matrix());
+					cliSerial->printf_P(PSTR("Heading: %ld, XYZ: %d, %d, %d\n"),
+									(wrap_360(ToDeg(heading) * 100)) /100,
+									compass.mag_x,
+									compass.mag_y,
+									compass.mag_z);
+				} else {
+					cliSerial->println_P(PSTR("not healthy"));
+				}
 
-            if(cliSerial->available() > 0) {
-                return (0);
-            }
-        }
-    } else {
-        cliSerial->printf_P(PSTR("Compass: "));
-        print_enabled(false);
-        return (0);
-    }
-    return (0);
-#endif
+				if(cliSerial->available() > 0){
+					return (0);
+				}
+			}
+		} else {
+			cliSerial->printf_P(PSTR("Compass: "));
+			print_enabled(false);
+			return (0);
+		}
+		return (0);
+	#endif
 }
 
 /*
@@ -909,27 +875,27 @@ test_mag(uint8_t argc, const Menu::arg *argv)
 static int8_t
 test_sonar(uint8_t argc, const Menu::arg *argv)
 {
-    if(g.sonar_enabled == false) {
-        cliSerial->printf_P(PSTR("Sonar disabled\n"));
-        return (0);
-    }
+	if(g.sonar_enabled == false){
+		cliSerial->printf_P(PSTR("Sonar disabled\n"));
+		return (0);
+	}
 
-    // make sure sonar is initialised
-    init_sonar();
+	// make sure sonar is initialised
+	init_sonar();
 
-    print_hit_enter();
-    while(1) {
-        delay(100);
+	print_hit_enter();
+	while(1) {
+		delay(100);
 
-        cliSerial->printf_P(PSTR("Sonar: %d cm\n"), sonar.read());
-        //cliSerial->printf_P(PSTR("Sonar, %d, %d\n"), sonar.read(), sonar.raw_value);
+		cliSerial->printf_P(PSTR("Sonar: %d cm\n"), sonar.read());
+		//cliSerial->printf_P(PSTR("Sonar, %d, %d\n"), sonar.read(), sonar.raw_value);
 
-        if(cliSerial->available() > 0) {
-            return (0);
-        }
-    }
+		if(cliSerial->available() > 0){
+			return (0);
+		}
+	}
 
-    return (0);
+	return (0);
 }
 #endif
 
@@ -938,34 +904,34 @@ static int8_t
 test_optflow(uint8_t argc, const Menu::arg *argv)
 {
 #if OPTFLOW == ENABLED
-    if(g.optflow_enabled) {
-        cliSerial->printf_P(PSTR("man id: %d\t"),optflow.read_register(ADNS3080_PRODUCT_ID));
-        print_hit_enter();
+	if(g.optflow_enabled) {
+		cliSerial->printf_P(PSTR("man id: %d\t"),optflow.read_register(ADNS3080_PRODUCT_ID));
+		print_hit_enter();
 
-        while(1) {
-            delay(200);
+		while(1){
+			delay(200);
             optflow.update(millis());
-            Log_Write_Optflow();
-            cliSerial->printf_P(PSTR("x/dx: %d/%d\t y/dy %d/%d\t squal:%d\n"),
-                            optflow.x,
-                            optflow.dx,
-                            optflow.y,
-                            optflow.dy,
-                            optflow.surface_quality);
+			Log_Write_Optflow();
+			cliSerial->printf_P(PSTR("x/dx: %d/%d\t y/dy %d/%d\t squal:%d\n"),
+						optflow.x,
+						optflow.dx,
+						optflow.y,
+						optflow.dy,
+						optflow.surface_quality);
 
-            if(cliSerial->available() > 0) {
-                return (0);
-            }
-        }
-    } else {
-        cliSerial->printf_P(PSTR("OptFlow: "));
-        print_enabled(false);
-    }
-    return (0);
+			if(cliSerial->available() > 0){
+				return (0);
+			}
+		}
+	} else {
+		cliSerial->printf_P(PSTR("OptFlow: "));
+		print_enabled(false);
+	}
+	return (0);
 
-#else
-    print_test_disabled();
-    return (0);
+	#else
+		print_test_disabled();
+		return (0);
 #endif      // OPTFLOW == ENABLED
 }
 
@@ -989,31 +955,33 @@ test_wp_nav(uint8_t argc, const Menu::arg *argv)
  *  test the dataflash is working
  */
 
+#if PIRATES_SENSOR_BOARD == PIRATES_CRIUS_AIO_PRO_V2
 static int8_t
 test_logging(uint8_t argc, const Menu::arg *argv)
 {
-#if defined( __AVR_ATmega1280__ )          // test disabled to save code size for 1280
-    print_test_disabled();
-    return (0);
-#else
-    cliSerial->println_P(PSTR("Testing dataflash logging"));
-    if (!DataFlash.CardInserted()) {
-        cliSerial->println_P(PSTR("ERR: No dataflash inserted"));
-        return 0;
-    }
-    DataFlash.ReadManufacturerID();
-    cliSerial->printf_P(PSTR("Manufacturer: 0x%02x   Device: 0x%04x\n"),
-                    (unsigned)DataFlash.df_manufacturer,
-                    (unsigned)DataFlash.df_device);
-    cliSerial->printf_P(PSTR("NumPages: %u  PageSize: %u\n"),
-                    (unsigned)DataFlash.df_NumPages+1,
-                    (unsigned)DataFlash.df_PageSize);
-    DataFlash.StartRead(DataFlash.df_NumPages+1);
-    cliSerial->printf_P(PSTR("Format version: %lx  Expected format version: %lx\n"),
-                    (unsigned long)DataFlash.ReadLong(), (unsigned long)DF_LOGGING_FORMAT);
-    return 0;
-#endif
+	#if defined( __AVR_ATmega1280__ )  // test disabled to save code size for 1280
+		print_test_disabled();
+		return (0);
+	#else
+		cliSerial->println_P(PSTR("Testing dataflash logging"));
+		if (!DataFlash.CardInserted()) {
+			cliSerial->println_P(PSTR("ERR: No dataflash inserted"));
+			return 0;
+		}
+		DataFlash.ReadManufacturerID();
+		cliSerial->printf_P(PSTR("Manufacturer: 0x%02x   Device: 0x%04x\n"),
+						(unsigned)DataFlash.df_manufacturer,
+						(unsigned)DataFlash.df_device);
+		cliSerial->printf_P(PSTR("NumPages: %u  PageSize: %u\n"),
+						(unsigned)DataFlash.df_NumPages+1,
+						(unsigned)DataFlash.df_PageSize);
+		DataFlash.StartRead(DataFlash.df_NumPages+1);
+		cliSerial->printf_P(PSTR("Format version: %lx  Expected format version: %lx\n"),
+						(unsigned long)DataFlash.ReadLong(), (unsigned long)DF_LOGGING_FORMAT);
+		return 0;
+	#endif
 }
+#endif
 
 
 /*
@@ -1075,16 +1043,16 @@ test_logging(uint8_t argc, const Menu::arg *argv)
  *       test_wp(NULL, NULL);
  *       return (0);
  *  }
- */
+*/
 
 static void print_hit_enter()
 {
-    cliSerial->printf_P(PSTR("Hit Enter to exit.\n\n"));
+	cliSerial->printf_P(PSTR("Hit Enter to exit.\n\n"));
 }
 
 static void print_test_disabled()
 {
-    cliSerial->printf_P(PSTR("Sorry, not 1280 compat.\n"));
+	cliSerial->printf_P(PSTR("Sorry, not 1280 compat.\n"));
 }
 
 /*
@@ -1109,7 +1077,7 @@ static void print_test_disabled()
  *       //next_WP.lat  = home.lat + length * cos(rads);   // Y
  *  }
  *
- */
+*/
 /*
  *  //static void print_motor_out(){
  *       cliSerial->printf("out: R: %d,  L: %d  F: %d  B: %d\n",
@@ -1118,5 +1086,45 @@ static void print_test_disabled()
  *                               (motor_out[CH_3]   - g.rc_3.radio_min),
  *                               (motor_out[CH_4]   - g.rc_3.radio_min));
  *  }
- */
+*/
+
+static int8_t
+test_radio_pwm(uint8_t argc, const Menu::arg *argv)
+{
+	#if defined( __AVR_ATmega1280__ )  // test disabled to save code size for 1280
+		print_test_disabled();
+		return (0);
+	#else
+		print_hit_enter();
+		delay(1000);
+		while(1){
+						delay(20);
+
+			// Filters radio input - adjust filters in the radio.pde file
+			// ----------------------------------------------------------
+			read_radio();
+
+			// servo Yaw
+			//APM_RC.OutputCh(CH_7, g.rc_4.radio_out);
+			if (ap_system.new_radio_frame) {
+				cliSerial->printf_P(PSTR("%d,%d,%d,%d,%d,%d,%d,%d\n"),
+								g.rc_1.radio_in,
+								g.rc_2.radio_in,
+								g.rc_3.radio_in,
+								g.rc_4.radio_in,
+								g.rc_5.radio_in,
+								g.rc_6.radio_in,
+								g.rc_7.radio_in,
+								g.rc_8.radio_in);
+			} else {
+				cliSerial->printf_P(PSTR("***** No signal\n"));
+			}
+			ap_system.new_radio_frame = false;
+			
+			if(cliSerial->available() > 0){
+				return (0);
+			}
+		}
+	#endif
+}
 #endif // CLI_ENABLED
