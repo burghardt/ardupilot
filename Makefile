@@ -1,14 +1,15 @@
-UPLOADTYPE := SERIAL
-#UPLOADTYPE := ICSP
+include config.mk
 
-#AVRDUDE ?= avrdude
-AVRDUDE ?= $(HOME)/packages/avrdude/avrdude
+UPLOADTYPE ?= SERIAL
+#UPLOADTYPE ?= ICSP
 
-ATMCPART = m2560
+AVRDUDE ?= avrdude
+PICOCOM ?= picocom
+
+BOARD = m2560
 
 ifneq ($(findstring SERIAL, $(UPLOADTYPE)),)
 	PROGTYPE = stk500v2
-	PORT = /dev/ttyUSB0
 else
 	PROGTYPE = usbasp
 	PORT = usb
@@ -16,6 +17,9 @@ endif
 
 all: build
 install: upload
+
+configure:
+	make -C ArduCopter configure
 
 build:
 	make -C ArduCopter
@@ -37,4 +41,10 @@ ctags: cscope.files
 	ctags -L cscope.files --extra=+fq --fields=+aiKln --if0 --sort=foldcase --totals=yes
 
 upload:
-	$(AVRDUDE) -p $(ATMCPART) -c $(PROGTYPE) -P $(PORT) -U flash:w:"$(TMP)/ArduCopter.build/ArduCopter.hex":i
+	$(AVRDUDE) -p $(BOARD) -c $(PROGTYPE) -P $(PORT) -U flash:w:"$(TMP)/ArduCopter.build/ArduCopter.hex":i
+
+cli:
+	@echo
+	@echo "Use Ctrl-A Ctrl-X to quit."
+	@echo
+	$(PICOCOM) -b 115200 $(PORT)
