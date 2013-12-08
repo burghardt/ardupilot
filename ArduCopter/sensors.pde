@@ -152,6 +152,6 @@ static void read_battery(void)
 void read_receiver_rssi(void)
 {
     RSSI_pin.set_pin(g.rssi_pin);
-    float ret = RSSI_pin.read() * 255 / g.rssi_range;
+    float ret = RSSI_pin.read() * 5 / g.rssi_range;
     receiver_rssi = constrain(ret, 0, 255);
 }
